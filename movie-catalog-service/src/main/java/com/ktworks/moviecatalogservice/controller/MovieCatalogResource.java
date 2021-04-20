@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.ktworks.moviecatalogservice.Entity.CatalogItem;
 import com.ktworks.moviecatalogservice.Entity.Movie;
@@ -22,7 +23,7 @@ import com.ktworks.moviecatalogservice.Entity.Rating;
 public class MovieCatalogResource {
 	
 	@Autowired
-	RestTemplate restTemplate;
+	private WebClient.Builder webClient;
 
 	@RequestMapping("/{userId}")
 	public List<CatalogItem> getCatalog(@PathVariable("userId") String userId){
@@ -35,7 +36,12 @@ public class MovieCatalogResource {
 		
 		for (Rating rating : ratings) {
 			
-			Movie movie = restTemplate.getForObject("http://localhost:8001/movies/"+rating.getMovieId(), Movie.class); 
+			Movie movie = webClient.build()
+					.get()
+					.uri("http://localhost:8001/movies/"+rating.getMovieId())
+					.retrieve()
+					.bodyToMono(Movie.class)
+					.block();
 			catalogList.add(new CatalogItem(movie.getName(),"Test",rating.getRating()));
 		}
 		return catalogList;
