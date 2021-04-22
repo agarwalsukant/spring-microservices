@@ -15,6 +15,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.ktworks.moviecatalogservice.Entity.CatalogItem;
 import com.ktworks.moviecatalogservice.Entity.Movie;
 import com.ktworks.moviecatalogservice.Entity.Rating;
+import com.ktworks.moviecatalogservice.Entity.UserRating;
 
 
 
@@ -28,13 +29,15 @@ public class MovieCatalogResource {
 	@RequestMapping("/{userId}")
 	public List<CatalogItem> getCatalog(@PathVariable("userId") String userId){
 				
-		List<Rating> ratings = Arrays.asList(
-				new Rating("1",4),
-				new Rating("2",3)
-				);
+		UserRating ratings = webClient.build()
+								.get()
+								.uri("http://localhost:8002/ratingsdata/"+userId)
+								.retrieve()
+								.bodyToMono(UserRating.class)
+								.block();
 		List<CatalogItem> catalogList = new ArrayList<>();
 		
-		for (Rating rating : ratings) {
+		for (Rating rating : ratings.getUserRating()) {
 			
 			Movie movie = webClient.build()
 					.get()

@@ -22,6 +22,12 @@ public class Rating {
 		this.movieId = movieId;
 		this.rating = rating;
 	}
+	public Rating() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	
 	
 	
 	

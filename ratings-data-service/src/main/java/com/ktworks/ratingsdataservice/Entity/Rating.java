@@ -23,6 +23,12 @@ public class Rating {
 		this.rating = rating;
 	}
 	
+	public Rating() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	
 	
 	
 	
