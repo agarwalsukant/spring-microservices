@@ -31,7 +31,7 @@ public class MovieCatalogResource {
 				
 		UserRating ratings = webClient.build()
 								.get()
-								.uri("http://localhost:8002/ratingsdata/"+userId)
+								.uri("http://ratings-data-service/ratingsdata/"+userId)
 								.retrieve()
 								.bodyToMono(UserRating.class)
 								.block();
@@ -41,7 +41,7 @@ public class MovieCatalogResource {
 			
 			Movie movie = webClient.build()
 					.get()
-					.uri("http://localhost:8001/movies/"+rating.getMovieId())
+					.uri("http://movie-info-service/movies/"+rating.getMovieId())
 					.retrieve()
 					.bodyToMono(Movie.class)
 					.block();
